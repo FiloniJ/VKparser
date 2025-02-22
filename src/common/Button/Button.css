@@ -8,6 +8,7 @@
   font-weight: 900;
   text-align: center;
   color: rgb(190, 190, 190);
+  margin-inline: auto;
 }
 
 .but:hover:not([disabled]) {

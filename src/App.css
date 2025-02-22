@@ -144,3 +144,17 @@ p {
   width: 25px;
   height: 25px;
 }
+
+fieldset {
+  padding: 3px;
+  border: 1px solid white;
+  border-image: linear-gradient(135deg, rgba(230, 231, 231, 1), rgba(230, 231, 231, 0.073));
+  border-image-slice: 15;
+  margin-inline: 1px;
+}
+
+legend {
+  text-align: center;
+  padding-inline: 5px;
+  text-shadow: 0 0 15px rgba(255,255,255,.5), 0 0 10px rgba(255,255,255,.5);
+}

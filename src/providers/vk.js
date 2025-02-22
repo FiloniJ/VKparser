@@ -5,29 +5,32 @@ const callbacks = {}
 
 // Очередь стэка для запросов к API
 export const stack = {
-  data: [],
-  use: () => {
-    const id = stack.data.length
-    if (id > 0) {
-      stack.data[id - 1]()
-      stack.data.pop()
-    } else {
-      clearInterval(stack.timer)
-      stack.timer = false
-      stack.onFinish()
-      stack.onFinish = () => {}
+  func: [],
+  call: async () => {
+    while (true) {
+      if (stack.func.length > (stack.id + 1)) {
+        stack.id += 1
+        await stack.func[stack.id]()
+      } else {
+        stack.clear()
+        break
+      }
     }
   },
-  call: func => {
-    stack.data.push(func)
-    if (!stack.timer) {
-      stack.use()
-      stack.timer = setInterval(stack.use, stack.delay)
+  add: newFunc => {
+    stack.func.push(newFunc)
+    if (stack.id === -1) {
+      stack.call()
     }
+  },
+  clear: () => {
+    stack.func = []
+    stack.onFinish()
+    stack.onFinish = () => {}
+    stack.id = -1
   },
   onFinish: () => {},
-  timer: false,
-  delay: 500
+  id: -1
 }
 // Вызов API VK
 const callVK = async (method, args, callbackName) => {
@@ -44,8 +47,8 @@ const callVK = async (method, args, callbackName) => {
   const data = await axios.get(`
     https://api.vk.com/method/${method}?v=5.199&access_token=${token}${str}
   `)
-  const likes = await callbacks[callbackName](data)
-  return likes
+  const callbackData = await callbacks[callbackName](data)
+  return callbackData
 }
 
 // Сбор лайков под постами
@@ -54,17 +57,15 @@ const likes = {
   name: {},
 }
 
-likes.get = (id, groupID) => {
-  callVK('likes.getList', {type: 'post', owner_id: groupID, item_id: id, extended: 1})
-    .then(res => {
-      const arr = res.data.response.items
-      for (let key in arr) {
-        let id = arr[key].id
-        let data = likes.user[id]
-        likes.user[id] = data ? data += 1 : data = 1
-        likes.name[id] = {fname: arr[key].first_name, lname: arr[key].last_name}
-      }
-    })
+likes.get = async (id, groupID) => {
+  const res = await callVK('likes.getList', {type: 'post', owner_id: groupID, item_id: id, extended: 1})
+  const arr = res.data.response.items
+  for (let key in arr) {
+    let id = arr[key].id
+    let data = likes.user[id]
+    likes.user[id] = data ? data += 1 : 1
+    likes.name[id] = {fname: arr[key].first_name, lname: arr[key].last_name}
+  }
 }
 
 callbacks.getLikes = async (data) => {
@@ -72,7 +73,7 @@ callbacks.getLikes = async (data) => {
   likes.name = {}
   const t = data.data.response.items
   for (let key in t) {
-    stack.call(() => likes.get(t[key].id, t[key].owner_id))
+    stack.add(() => likes.get(t[key].id, t[key].owner_id))
   }
   stack.onFinish = () => {
     let data = []
@@ -86,6 +87,7 @@ callbacks.getLikes = async (data) => {
     })
     stack.resolve(data)
   }
+  
   return new Promise(resolve => {
     stack.resolve = resolve
   })

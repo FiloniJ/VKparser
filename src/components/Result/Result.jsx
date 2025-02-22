@@ -10,6 +10,7 @@ const Result = props => {
     navigator.clipboard.writeText(text.join(''))
   }
 
+
   return (
     <div className='layout'>
       <div className="menu-name">Результаты</div>

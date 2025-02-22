@@ -21,6 +21,7 @@ function App() {
     })
     if (isZero) {
       // alert('Выберите минимум 1 фильтр для поиска')
+      // return
     }
     setVKData(false)
     try {
@@ -52,7 +53,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className='flex flex-col justify-center'>
       <Header name = 'Сбор активности в группе ВК'/>
       <div className = "layout text-center">
         <div>
@@ -65,7 +66,7 @@ function App() {
           />
         </div>
         <div className = "mt-3">
-          <label htmlFor = "notes_amount" className = "mr-5">Количество записей для обработки</label>
+          <label htmlFor = "notes_amount" className = "mr-5">Количество последних записей для обработки</label>
           <input
             className = "w-20"
             type = "number"
