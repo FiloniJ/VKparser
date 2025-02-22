@@ -10,7 +10,6 @@ const Result = props => {
     navigator.clipboard.writeText(text.join(''))
   }
 
-
   return (
     <div className='layout'>
       <div className="menu-name">Результаты</div>
@@ -19,12 +18,20 @@ const Result = props => {
         onClick = {saveData}
       />
       <div className="layout">
-        {Object.keys(props.data).map(el => (
-          <a key={el} href={`https://vk.com/id${props.data[el].id}`} rel="noreferrer" target='_blank' title='Перейти в профиль'>
-            <div className="layout flex indent-0">
-              <span>{props.data[el].lname + ' ' + props.data[el].fname}</span>
-              <Image className="mx-2" name='like' width='30' height='30'/>
-              <span>{props.data[el].value}</span>
+        {props.data.map(user => (
+          <a key={user.id} href={`https://vk.com/id${user.id}`} rel="noreferrer" target='_blank' title='Перейти в профиль'>
+            <div className="layout flex flex-col sm:flex-row indent-0">
+              <span>{user.lname + ' ' + user.fname}</span>
+              <div className='flex flex-row justify-center'>
+                <Image className="mx-2" name='like' width='30' height='30'/>
+                <span>{user.like}</span>
+                {user.comment &&
+                  <>
+                    <Image className="mx-2" name='comment' width='30' height='30'/>
+                    <span>{user.comment}</span>
+                  </>
+                }
+              </div>
             </div>
           </a>
         ))}

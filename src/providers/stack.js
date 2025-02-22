@@ -50,7 +50,6 @@ export const callVK = async (method, args, callbackName) => {
   const data = await axios.get(`
     https://api.vk.com/method/${method}?v=5.199&access_token=${token}${str}
   `)
-  console.log(callbacks)
   const callbackData = await callbacks[callbackName](data)
   return callbackData
 }

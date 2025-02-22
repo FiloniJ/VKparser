@@ -12,7 +12,9 @@ likes.get = async (id, groupID) => {
     let id = arr[key].id
     let data = likes.user[id]
     likes.user[id] = data ? data += 1 : 1
-    likes.name[id] = {fname: arr[key].first_name, lname: arr[key].last_name}
+    if (!likes.name[id]) {
+      likes.name[id] = {fname: arr[key].first_name, lname: arr[key].last_name}
+    }
   }
 }
 
@@ -26,13 +28,8 @@ export const getLikes = async (data) => {
   stack.onFinish = () => {
     let data = []
     for (let key in likes.user) {
-      data.push({id: key, value: likes.user[key], fname: likes.name[key].fname, lname: likes.name[key].lname})
+      data.push({id: key, like: likes.user[key], fname: likes.name[key].fname, lname: likes.name[key].lname})
     }
-    data.sort((a, b) => {
-      if (a.value > b.value) return -1;
-      if (a.value < b.value) return 1;
-      return 0
-    })
     stack.resolve(data)
   }
   

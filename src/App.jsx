@@ -8,7 +8,7 @@ import { callVK } from './providers/stack'
 
 function App() {
   const [amount, setAmount] = useState(1)
-  const [group, setGroup] = useState('https://vk.com/mtami') // временно
+  const [group, setGroup] = useState('https://vk.com/')
   const [isLoading, setLoading] = useState(false)
   const [VKData, setVKData] = useState(false)
 
@@ -34,8 +34,13 @@ function App() {
         groupID = group.replace('https://vk.com/public', '')
       }
       if (groupID !== 0) {
-        // const data = await callVK('wall.get',{owner_id: -groupID, count: amount}, 'getLikes')
-        const data = await callVK('wall.get',{owner_id: -groupID, count: amount}, 'getLikes')
+        const likes = await callVK('wall.get',{owner_id: -groupID, count: amount}, 'getLikes')
+        const comments = await callVK('wall.get',{owner_id: -groupID, count: amount}, 'getWallpostCommentatorsUsers')
+        const likesMap = new Map(likes.map(l => [l.id, l]))
+        const commentsMap = new Map(comments.map(c => [c.id, c]))
+        const allIds = new Set([...likesMap.keys(), ...commentsMap.keys()])
+        const data = [...allIds].map(id => ({...likesMap.get(id), ...commentsMap.get(id)}))
+        data.sort((a,b) => (b.like || 0 + b.comment || 0) - (a.like || 0 + a.like || 0))
         setVKData(data)
         setLoading(false)
       } else {
