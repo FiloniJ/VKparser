@@ -1,0 +1,146 @@
+/* Основные настройки */
+body {
+  background-color: #141414;
+  color: rgb(190, 190, 190);
+  user-select: none;
+  text-indent: 15px;
+  font-size: 18px;
+  font-weight: bolder;
+}
+
+.layout {
+  background-color: #141414;
+  margin: 5px 7px;
+  padding: 10px;
+  box-shadow: 5px 5px 5px black;
+  border: 1px solid #333;
+  border-radius: 0.25rem;
+}
+
+input {
+  color: black;
+  background-color: #e5e5e5b6;
+}
+
+.snow {
+  /* background-image:  url('ct.png'), url('snow.jpg'); */
+  background-position: right bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+p {
+  margin: 0;
+  padding: 2px;
+}
+
+.hidden {
+  display: none;
+}
+
+.text-center {
+ text-align: center; 
+}
+/* Всплывающая подсказка*/
+#showInfo {
+  position: absolute;
+  min-width: 100px;
+  max-width: 300px;
+  min-height: 10px;
+  max-height: 500px;
+  z-index: 1000;
+}
+
+#helpText {
+  display: flex;
+  text-align: center;
+  align-items: center;
+}
+
+/* Квесты */
+.quest-size {
+  width: 400px;
+  height: 350px;
+  z-index: -2;
+}
+
+/* Управление отраслями */
+.otr-size {
+  width: 600px;
+  min-height: 500px;
+}
+
+.bar {
+  display: block;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.center-input {
+  text-align: center;
+}
+
+.cell-info {
+  display: flex;
+  flex-direction: column;
+}
+
+#max1, #max2, #max3 {
+  text-align: center;
+  font-size: 0.8rem;
+}
+/* Апгрейд баз фракций */
+.base-size {
+  width: 800px;
+  min-height: 500px;
+}
+
+.field-name {
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-align: center;
+  text-shadow: 0 0 20px green;
+}
+
+.base-upg-des {
+  text-shadow: none;
+  text-transform: none;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.base-bar {
+  display: block;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.base-values {
+  display: flex;
+  justify-content: center;
+}
+
+.base-but {
+  min-width: 100px;
+  height: 50px;
+  position: relative;
+  left: 0;
+  transform: none;
+  text-transform: none;
+}
+
+.base-but:hover {
+  min-width: 150px;
+  font-size: 15px;
+}
+
+/* Иконки */
+.icon {
+  width: 25px;
+  height: 25px;
+}

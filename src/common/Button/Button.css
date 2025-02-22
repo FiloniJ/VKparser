@@ -1,0 +1,36 @@
+.but {
+  min-width: 100px;
+  height: 50px;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  text-transform: uppercase;
+  font-weight: 900;
+  text-align: center;
+  color: rgb(190, 190, 190);
+}
+
+.but:hover:not([disabled]) {
+  min-width: 150px;
+  font-size: 25px;
+  line-height: 25px;
+  text-shadow: 0 0 20px red;
+  transition: all .25s;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  min-width: 50px;
+  min-height: 50px;
+  position: relative;
+  left: 47.5%;
+  transform: translate(-50%, 0);
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
