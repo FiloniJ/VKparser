@@ -23,8 +23,12 @@ const Result = props => {
             <div className="layout flex flex-col sm:flex-row indent-0">
               <span>{user.lname + ' ' + user.fname}</span>
               <div className='flex flex-row justify-center'>
-                <Image className="mx-2" name='like' width='30' height='30'/>
-                <span>{user.like}</span>
+                {user.like &&
+                  <>
+                    <Image className="mx-2" name='like' width='30' height='30'/>
+                    <span>{user.like}</span>
+                  </>
+                }
                 {user.comment &&
                   <>
                     <Image className="mx-2" name='comment' width='30' height='30'/>

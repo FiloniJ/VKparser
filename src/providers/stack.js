@@ -7,6 +7,8 @@ const token = 'vk1.a.x4gCW04bymH4aRuKX2pLn9aXodxWmuShUDI-f-FuIjp_5Nd8wvNcD-sVlg8
 const callbacks = { getLikes, getWallpostCommentatorsUsers }
 
 // Очередь стэка для запросов к API
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
 export const stack = {
   func: [],
   call: async () => {
@@ -14,6 +16,7 @@ export const stack = {
       if (stack.func.length > (stack.id + 1)) {
         stack.id += 1
         await stack.func[stack.id]()
+        await delay(200)
       } else {
         stack.clear()
         break
