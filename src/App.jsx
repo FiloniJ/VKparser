@@ -4,7 +4,7 @@ import Button from "./common/Button/Button";
 import Header from "./common/Header/Header";
 import Result from './components/Result/Result';
 import SearchFilter from "./components/SearchFilter/SearchFilter";
-import { callVK } from './providers/vk'
+import { callVK } from './providers/stack'
 
 function App() {
   const [amount, setAmount] = useState(1)
@@ -34,6 +34,7 @@ function App() {
         groupID = group.replace('https://vk.com/public', '')
       }
       if (groupID !== 0) {
+        // const data = await callVK('wall.get',{owner_id: -groupID, count: amount}, 'getLikes')
         const data = await callVK('wall.get',{owner_id: -groupID, count: amount}, 'getLikes')
         setVKData(data)
         setLoading(false)
