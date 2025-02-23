@@ -1,4 +1,4 @@
-import { stack, callVK } from "./stack"
+import { stack, callVK, delay } from "./stack"
 
 const comments = {
     user: {},
@@ -15,16 +15,21 @@ comments.get = async (id, groupID) => {
         sort: 'desc',
         preview_length: '5',
     })
-    const arr = res.data.response.items
-    const profiles = res.data.response.profiles
-    for (let key in arr) {
-        let id = arr[key].from_id
-        let data = comments.user[id]
-        comments.user[id] = data ? data += 1 : 1
-        if (!comments.name[id]) {
-            const user = profiles.find(user => user.id === id)
-            comments.name[id] = {fname: user.first_name, lname: user.last_name}
+    if (res.data.response) {
+        const arr = res.data.response.items
+        const profiles = res.data.response.profiles
+        for (let key in arr) {
+            let id = arr[key].from_id
+            let data = comments.user[id]
+            comments.user[id] = data ? data += 1 : 1
+            if (!comments.name[id]) {
+                const user = profiles.find(user => user.id === id)
+                comments.name[id] = {fname: user.first_name, lname: user.last_name}
+            }
         }
+    } else {
+        await delay(500)
+        await comments.get(id, groupID)
     }
 }
 

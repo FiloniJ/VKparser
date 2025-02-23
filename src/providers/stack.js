@@ -7,7 +7,7 @@ const token = 'vk1.a.x4gCW04bymH4aRuKX2pLn9aXodxWmuShUDI-f-FuIjp_5Nd8wvNcD-sVlg8
 const callbacks = { getLikes, getWallpostCommentatorsUsers }
 
 // Очередь стэка для запросов к API
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+export const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 export const stack = {
   func: [],

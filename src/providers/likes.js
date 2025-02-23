@@ -1,4 +1,4 @@
-import { stack, callVK } from "./stack"
+import { stack, callVK, delay } from "./stack"
 
 const likes = {
   user: {},
@@ -7,14 +7,19 @@ const likes = {
 
 likes.get = async (id, groupID) => {
   const res = await callVK('likes.getList', {type: 'post', owner_id: groupID, item_id: id, extended: 1})
-  const arr = res.data.response.items
-  for (let key in arr) {
-    let id = arr[key].id
-    let data = likes.user[id]
-    likes.user[id] = data ? data += 1 : 1
-    if (!likes.name[id]) {
-      likes.name[id] = {fname: arr[key].first_name, lname: arr[key].last_name}
+  if (res.data.response) {
+    const arr = res.data.response.items
+    for (let key in arr) {
+      let id = arr[key].id
+      let data = likes.user[id]
+      likes.user[id] = data ? data += 1 : 1
+      if (!likes.name[id]) {
+        likes.name[id] = {fname: arr[key].first_name, lname: arr[key].last_name}
+      }
     }
+  } else {
+    await delay(500)
+    await likes.get(id, groupID)
   }
 }
 
