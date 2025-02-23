@@ -3,18 +3,43 @@ import Button from '../../common/Button/Button'
 import Image from '../../common/Image'
 
 const Result = props => {
-  const saveData = () => {
-    let text = Object.keys(props.data).map(el => (
-      `Активность (${props.data[el].value}) - ${props.data[el].lname} ${props.data[el].fname} - https://vk.com/id${props.data[el].id}\n`
-    ))
-    navigator.clipboard.writeText(text.join(''))
+  const headersMap = {
+    id: 'Ид',
+    fname: 'Имя',
+    lname: 'Фамилия',
+    like: 'Лайки',
+    comment: 'Комментарии',
+  }
+
+  const saveData = (data = props.data, filename = "Активность в ВК.csv") => {
+    const delimiter = ";"
+    const headers = Object.values(headersMap)
+    const keys = Object.keys(headersMap)
+    const escapeValue = (value) => {
+        if (typeof value === "string") {
+            return `"${value.replace(/"/g, '""')}"`
+        }
+        return value ?? ""
+    }
+    const csvContent = [
+        "\uFEFF" + headers.join(delimiter),
+        ...data.map(row => keys.map(key => escapeValue(row[key])).join(delimiter))
+    ].join("\n")
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
+    const link = document.createElement("a")
+    link.href = URL.createObjectURL(blob)
+    link.setAttribute("download", filename)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
   return (
     <div className='layout'>
       <div className="menu-name">Результаты</div>
       <Button 
-        name = 'Скопировать данные'
+        name = 'Сохранить данные'
         onClick = {saveData}
       />
       <div className="layout">
