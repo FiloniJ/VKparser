@@ -11,8 +11,7 @@ likes.get = async (id, groupID) => {
     const arr = res.data.response.items
     for (let key in arr) {
       let id = arr[key].id
-      let data = likes.user[id]
-      likes.user[id] = data ? data += 1 : 1
+      likes.user[id] = (likes.user[id] || 0) + 1
       if (!likes.name[id]) {
         likes.name[id] = {fname: arr[key].first_name, lname: arr[key].last_name}
       }

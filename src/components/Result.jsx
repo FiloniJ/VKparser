@@ -1,6 +1,6 @@
 import React from 'react'
-import Button from '../../common/Button/Button'
-import Image from '../../common/Image'
+import Button from '../common/Button/Button'
+import Image from '../common/Image'
 
 const Result = props => {
   const headersMap = {
@@ -11,7 +11,7 @@ const Result = props => {
     comment: 'Комментарии',
   }
 
-  const saveData = (data = props.data, filename = "Активность в ВК.csv") => {
+  const saveData = (e, filename = "Активность в ВК.csv") => {
     const delimiter = ";"
     const headers = Object.values(headersMap)
     const keys = Object.keys(headersMap)
@@ -23,7 +23,7 @@ const Result = props => {
     }
     const csvContent = [
         "\uFEFF" + headers.join(delimiter),
-        ...data.map(row => keys.map(key => escapeValue(row[key])).join(delimiter))
+        ...props.data.map(row => keys.map(key => escapeValue(row[key])).join(delimiter))
     ].join("\n")
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })

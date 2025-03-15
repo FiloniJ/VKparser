@@ -1,18 +1,14 @@
 import './Button.css'
 
-const Button = props => {
-  const buttonClicked = () => {
-    props.onClick()
-  }
-
+const Button = ({onClick, isLoading, name}) => {
   return (
     <div>
       <button
-        onClick={buttonClicked}
-        className={`layout but ${props.isLoading && 'loader'}`}
-        disabled={props.isLoading}
+        onClick={onClick}
+        className={`layout but ${isLoading && 'loader'}`}
+        disabled={isLoading}
       >
-        {!props.isLoading && props.name }
+        {!isLoading && name }
       </button>
     </div>
   )

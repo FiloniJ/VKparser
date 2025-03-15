@@ -3,9 +3,7 @@ import './Header.css'
 
 const Header = props => {
   return (
-    <div>
-      <div className="layout menu-name">{props.name}</div>
-    </div>
+    <div className="layout menu-name">{props.name}</div>
   )
 }
 

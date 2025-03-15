@@ -5,18 +5,17 @@ const urls = {
   comment: './media/comment-icon.png'
 }
 
-const Image = props => {
+const Image = ({ name, width = '100%', height = '100%', className = ''}) => {
+  if (!name || !urls[name]) return null
   return (
     <div className='flex align-middle'>
-      {props.name &&
-        <img
-          alt={props.name}
-          className={`object-contain ${props.className}`}
-          width={props.width || '100%'}
-          height={props.height || '100%'}
-          src={`${urls[props.name]}`}
-        ></img>
-      }
+      <img
+        alt={name || ''}
+        className={`object-contain ${className}`}
+        width={width}
+        height={height}
+        src={urls[name]}
+      ></img>
     </div>
   )
 }

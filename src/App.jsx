@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import "./App.css";
 import Button from "./common/Button/Button";
 import Header from "./common/Header/Header";
-import Result from './components/Result/Result';
+import Result from './components/Result';
 import SearchFilter from "./components/SearchFilter/SearchFilter";
 import { callVK } from './providers/stack'
 import SearchInput from './components/SearchFilter/SearchInput';
@@ -15,20 +15,20 @@ function App() {
   const commentRef = useRef()
   const likeRef = useRef()
 
+  const amoutLimit = value => Math.max(1, Math.min(100, value))
+
   const startSearch = async ()  => {
-    if (amount > 100) setAmount(100)
-    if (amount < 1) setAmount(1)
+    setAmount(prev => amoutLimit(prev))
     if (!commentRef.current.checked && !likeRef.current.checked) {
       return alert('Выберите минимум 1 фильтр для поиска')
     }
     setVKData(false)
+    setLoading(true)
     try {
       let groupID = 0
-      setLoading(true)
       if (group.indexOf('vk.com/public') === -1) {
         const groupName = group.replace('https://vk.com/', '')
         if (!groupName) {
-          setLoading(false)
           return alert('Укажите адрес группы ВК!')
         }
         const data = await callVK('utils.resolveScreenName',{screen_name: groupName})
@@ -50,12 +50,12 @@ function App() {
         const data = [...allIds].map(id => ({...likesMap.get(id), ...commentsMap.get(id)}))
         data.sort((a,b) => ((b.like || 0) + (b.comment || 0)) - ((a.like || 0) + (a.comment || 0)))
         setVKData(data)
-        setLoading(false)
       } else {
         alert('Введите правильный адрес группы ВК!')
-        setLoading(false)
       }
     } catch(e) {
+      console.error(e)
+    } finally {
       setLoading(false)
     }
   }

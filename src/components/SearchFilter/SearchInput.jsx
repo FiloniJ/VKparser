@@ -1,14 +1,14 @@
 import React, { forwardRef } from 'react';
 
-const SearchInput = forwardRef((props, ref) => {
+const SearchInput = forwardRef(({id, defaultChecked, name}, ref) => {
     return (
        <div>
             <input type="checkbox"
-                id={props.id}
+                id={id}
                 ref={ref}
-                defaultChecked={props.defaultChecked}
+                defaultChecked={defaultChecked}
             />
-            <label htmlFor={props.id} className='ml-2'>{props.name}</label>
+            <label htmlFor={id} className='ml-2'>{name}</label>
        </div>
     )
 })
