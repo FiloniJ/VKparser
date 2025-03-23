@@ -2,8 +2,8 @@ import axios from 'axios';
 import { getLikes } from './likes';
 import { getWallpostCommentatorsUsers } from './comments';
 
-const token = 'vk1.a.x4gCW04bymH4aRuKX2pLn9aXodxWmuShUDI-f-FuIjp_5Nd8wvNcD-sVlg8DmhBwfMKcvTnHquing55ZIQeuYMny8TjEjbzbid9y3kV83QhhIWhXXNk7gKS583Pq5yc2UEvyuk_SS8SFNG9Yg7ofjG8FkvVg-57svyLRF-TzLxScKBRtUnsvvzMI-1Roj-tYN3vO6IJ06KS9BKOGWXiCPA'
-const API_VERSION = '5.199'
+const token = process.env.REACT_APP_token
+const API_VERSION = process.env.REACT_APP_API_VERSION
 // Коллбэки
 const callbacks = { getLikes, getWallpostCommentatorsUsers }
 

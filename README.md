@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+# Парсер ВК
+### Назначение
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Собирает список активных участников в группе ВКонтакте на основе их лайков и комментариев к постам.  
+Лайки и комментарии каждого пользователя суммируются.
+### Функции
+✔️ Анализ лайков и комментариев за последние N постов  
+✔️ Сортировка пользователей по активности  
+✔️ Экспорт результатов в CSV  
+✔️ Автоматическая обработка задержек VK API  
+✔️ Поддержка поиска группы по ID или названию  
 
-## Available Scripts
+### Установка
+Введите в терминале следующие команды:  
+• для клонирования  репозитория
+```sh
+git clone https://github.com/FiloniJ/VKparser
+```
+• для установки необходимых пакетов
+```sh
+cd VKparser
+npm install
+```
 
-In the project directory, you can run:
+### Использование
+• для запуска проекта
+```sh
+npm start
+```
+После запуска откроется новое окно в браузере (обычно по адресу http://localhost:3000/)
+1. Вставьте ссылку на группу ВК.
+2. Укажите количество последних записей для парсинга (чем больше записей, тем дольше процесс).
+3. Поставьте галочки по каким параметрам парсить (лайки, комментарии или всё вместе).
+4. Нажмите «Начать парсинг».
+5. Дождитесь окончания результатов парсинга.
+6. Можете ознакомиться с результатами парсинга и сохраннить данные в файле CSV (кнопка «Сохранить данные»). При клике на имя открывает профиль этого человек в ВК.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Имеется готовый файл .env с токеном (чтобы вручную не получать собственный токен - для быстрой проверки работоспособности проекта).
+### Особенности проекта
+| Функция| Описание| 
+|-----------------------|--|
+|**Стек запросов**|Поочередная отправка запросов к VK API. При превышении лимита – автоматическая пауза.|
+|**Экспорт данных**|	Сохранение результатов в CSV (с именами, ссылками и количеством лайков/комментариев).|
+|**Гибкие фильтры**|Можно парсить только лайки, только комментарии или всё вместе.|
+|**Поиск группы**|Поддержка поиска группы по ID или названию. Ошибка, если группа не найдена.|
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Возможные ошибки
+**Неправильный токен** – убедитесь, что в .env указан корректный VK_TOKEN.  
+**Закрытая группа** – парсер работает только с открытыми группами (с закрытыми если у вас есть доступ к этой группе). Не работает если вы заблокированы в данной группе.

@@ -74,7 +74,7 @@ function App() {
           />
         </div>
         <div className = "mt-3">
-          <label htmlFor = "notes_amount" className = "mr-5">Количество последних записей для обработки</label>
+          <label htmlFor = "notes_amount" className = "mr-5">Количество последних записей для парсинга</label>
           <input
             className = "w-20"
             type = "number"
@@ -91,7 +91,7 @@ function App() {
       </div>
       <Button
         onClick = {startSearch}
-        name = 'Начать поиск'
+        name = 'Начать парсинг'
         isLoading = {isLoading}
       />
       {VKData &&
