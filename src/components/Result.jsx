@@ -1,46 +1,15 @@
 import React from 'react'
 import Button from '../common/Button/Button'
 import Image from '../common/Image'
+import { saveToCSV } from '../providers/saveToCSV'
 
 const Result = props => {
-  const headersMap = {
-    id: 'Ид',
-    fname: 'Имя',
-    lname: 'Фамилия',
-    like: 'Лайки',
-    comment: 'Комментарии',
-  }
-
-  const saveData = (e, filename = "Активность в ВК.csv") => {
-    const delimiter = ";"
-    const headers = Object.values(headersMap)
-    const keys = Object.keys(headersMap)
-    const escapeValue = (value) => {
-        if (typeof value === "string") {
-            return `"${value.replace(/"/g, '""')}"`
-        }
-        return value ?? ""
-    }
-    const csvContent = [
-        "\uFEFF" + headers.join(delimiter),
-        ...props.data.map(row => keys.map(key => escapeValue(row[key])).join(delimiter))
-    ].join("\n")
-
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
-    const link = document.createElement("a")
-    link.href = URL.createObjectURL(blob)
-    link.setAttribute("download", filename)
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
-
   return (
     <div className='layout'>
       <div className="menu-name">Результаты</div>
       <Button 
         name = 'Сохранить данные'
-        onClick = {saveData}
+        onClick = {() => saveToCSV(props)}
       />
       <div className="layout">
         {props.data.map(user => (
