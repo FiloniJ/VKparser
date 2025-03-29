@@ -38,7 +38,7 @@ export const stack = {
 // Вызов API VK
 export const callVK = async (method, args, callbackName) => {
   const params = new URLSearchParams({v: API_VERSION, access_token: token, ...args}).toString()
-  const url = `https://api.vk.com/method/${method}?${params}`
+  const url = `/method/${method}?${params}`
   try {
     const data = await axios.get(url)
     return callbackName ? await callbacks[callbackName]?.(data) : data

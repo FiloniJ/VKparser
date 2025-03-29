@@ -22,13 +22,6 @@ input {
   background-color: #e5e5e5b6;
 }
 
-.snow {
-  /* background-image:  url('ct.png'), url('snow.jpg'); */
-  background-position: right bottom;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
 p {
   margin: 0;
   padding: 2px;
