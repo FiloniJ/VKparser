@@ -1,14 +1,26 @@
 import axios from 'axios';
 import { getLikes } from './likes';
 import { getWallpostCommentatorsUsers } from './comments';
+import { dataType } from '../App';
 
-const token = process.env.REACT_APP_token
-const API_VERSION = process.env.REACT_APP_API_VERSION
+const token: string| undefined = process.env.REACT_APP_token
+const API_VERSION: string | undefined = process.env.REACT_APP_API_VERSION
 // Коллбэки
-const callbacks = { getLikes, getWallpostCommentatorsUsers }
+const callbacks: Record<string, Function> = { getLikes, getWallpostCommentatorsUsers }
 
 // Очередь стэка для запросов к API
-export const stack = {
+type stackType = {
+  func: (() => void)[],
+  id: number,
+  running: boolean,
+  call: () => void,
+  add: (func: () => void) => void,
+  clear: () => void,
+  onFinish: () => void,
+  resolve?: (data: dataType[]) => void
+}
+
+export const stack: stackType = {
   func: [],
   id: -1,
   running: false,
@@ -33,10 +45,11 @@ export const stack = {
     this.onFinish()
     this.onFinish = () => {}
   },
-  onFinish () {}
+  onFinish () {},
 }
 // Вызов API VK
-export const callVK = async (method, args, callbackName) => {
+
+export const callVK = async (method: string, args: any, callbackName?: string) => {
   const params = new URLSearchParams({v: API_VERSION, access_token: token, ...args}).toString()
   const url = `/method/${method}?${params}`
   try {
@@ -48,7 +61,7 @@ export const callVK = async (method, args, callbackName) => {
   }
 }
 // Прочее
-export const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 window.addEventListener('unhandledrejection', e => {
   console.log(e)

@@ -1,6 +1,13 @@
 import React, { forwardRef } from 'react';
 
-const SearchInput = forwardRef(({id, defaultChecked, name}, ref) => {
+type Props = {
+    id: string,
+    defaultChecked?: boolean,
+    name: string,
+    ref: HTMLInputElement
+}
+
+const SearchInput = forwardRef<HTMLInputElement, Props>(({id, defaultChecked, name}, ref) => {
     return (
        <div>
             <input type="checkbox"

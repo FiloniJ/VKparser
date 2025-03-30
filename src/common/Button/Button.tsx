@@ -1,6 +1,13 @@
+import React from 'react'
 import './Button.css'
 
-const Button = ({onClick, isLoading, name}) => {
+type Props = {
+  onClick: () => void,
+  isLoading?: boolean,
+  name: string
+}
+
+const Button: React.FC<Props> = ({onClick, isLoading, name}) => {
   return (
     <div>
       <button

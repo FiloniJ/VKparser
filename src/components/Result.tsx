@@ -2,17 +2,22 @@ import React from 'react'
 import Button from '../common/Button/Button'
 import Image from '../common/Image'
 import { saveToCSV } from '../providers/saveToCSV'
+import { dataType } from '../App'
 
-const Result = props => {
+type Props = {
+  data: dataType[]
+}
+
+const Result: React.FC<Props> = ({ data }) => {
   return (
     <div className='layout'>
       <div className="menu-name">Результаты</div>
       <Button 
         name = 'Сохранить данные'
-        onClick = {() => saveToCSV(props)}
+        onClick = {() => saveToCSV(data)}
       />
       <div className="layout">
-        {props.data.map(user => (
+        {data.map(user => (
           <a key={user.id} href={`https://vk.com/id${user.id}`} rel="noreferrer" target='_blank' title='Перейти в профиль'>
             <div className="layout flex flex-col sm:flex-row indent-0">
               <span>{user.lname + ' ' + user.fname}</span>

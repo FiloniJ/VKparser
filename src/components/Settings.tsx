@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import SearchFilter from './SearchFilter/SearchFilter'
 import SearchInput from './SearchFilter/SearchInput'
 
-const Settings = ({group, setGroup, setAmount, likeRef, commentRef, amount}) => {
+export type settingProps = {
+  group: string,
+  setGroup: Dispatch<SetStateAction<string>>,
+  setAmount: Dispatch<SetStateAction<number>>,
+  likeRef: React.RefObject<HTMLInputElement | null>,
+  commentRef: React.RefObject<HTMLInputElement | null>,
+  amount: number
+}
+
+const Settings: React.FC<settingProps> = ({group, setGroup, setAmount, likeRef, commentRef, amount}) => {
     return (
     <div className = "layout text-center">
         <div>
@@ -11,7 +20,7 @@ const Settings = ({group, setGroup, setAmount, likeRef, commentRef, amount}) => 
             type = "text"
             id = "group_id"
             value = { group }
-            onChange = {e=> setGroup(e.target.value)}
+            onChange = {e => setGroup(e.target.value)}
           />
         </div>
         <div className = "mt-3">
@@ -22,7 +31,7 @@ const Settings = ({group, setGroup, setAmount, likeRef, commentRef, amount}) => 
             id = "notes_amount"
             min = "1" max = "100"
             value = {amount}
-            onChange = {e  => setAmount(e.target.value)}
+            onChange = {e  => setAmount(Number(e.target.value))}
           />
         </div>
         <SearchFilter>
