@@ -1,5 +1,6 @@
 import { dataType } from "../App"
-import { stack, callVK, delay } from "./stack"
+import { queue, callVK } from "./queue"
+import { delay } from "./utils"
 
 type Comments = {
     user: Record<number, number>,
@@ -54,19 +55,19 @@ export const getWallpostCommentatorsUsers = async (data: ApiResponse) => {
     comments.name = {}
     const t = data.data.response.items
     for (let key in t) {
-        stack.add(() => comments.get(t[key].id, t[key].owner_id))
+        queue.add(() => comments.get(t[key].id, t[key].owner_id))
     }
-    stack.onFinish = () => {
+    queue.onFinish = () => {
         let data: dataType[] = []
         for (let key in comments.user) {
             if (comments.name[key]) {
                 data.push({id: key, comment: comments.user[key], fname: comments.name[key].fname, lname: comments.name[key].lname})
             }
         }
-        stack.resolve?.(data)
+        queue.resolve?.(data)
     }
 
     return new Promise(resolve => {
-        stack.resolve = resolve
+        queue.resolve = resolve
     })
 }

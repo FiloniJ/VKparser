@@ -1,5 +1,6 @@
 import { dataType } from "../App"
-import { stack, callVK, delay } from "./stack"
+import { queue, callVK } from "./queue"
+import { delay } from "./utils"
 
 type Likes = {
   user: number[],
@@ -41,17 +42,17 @@ export const getLikes = async (data: ApiResponse) => {
   likes.name = []
   const t = data.data.response.items
   for (let key in t) {
-    stack.add(() => likes.get(t[key].id, t[key].owner_id))
+    queue.add(() => likes.get(t[key].id, t[key].owner_id))
   }
-  stack.onFinish = () => {
+  queue.onFinish = () => {
     let data: dataType[] = []
     for (let key in likes.user) {
       data.push({id: key, like: likes.user[key], fname: likes.name[key].fname, lname: likes.name[key].lname})
     }
-    stack.resolve?.(data)
+    queue.resolve?.(data)
   }
   
   return new Promise(resolve => {
-    stack.resolve = resolve
+    queue.resolve = resolve
   })
 }

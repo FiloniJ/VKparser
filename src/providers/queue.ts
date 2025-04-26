@@ -2,45 +2,60 @@ import axios from 'axios';
 import { getLikes } from './likes';
 import { getWallpostCommentatorsUsers } from './comments';
 import { dataType } from '../App';
+import { delay } from './utils';
 
 const token: string| undefined = process.env.REACT_APP_token
 const API_VERSION: string | undefined = process.env.REACT_APP_API_VERSION
-// Коллбэки
 const callbacks: Record<string, Function> = { getLikes, getWallpostCommentatorsUsers }
+const bufferLimit: number = 1000
 
-// Очередь стэка для запросов к API
-type stackType = {
-  func: (() => void)[],
-  id: number,
+// Очередь для запросов к API
+type queueType = {
+  func: Array<(() => void) | undefined>,
   running: boolean,
   call: () => void,
   add: (func: () => void) => void,
   clear: () => void,
   onFinish: () => void,
-  resolve?: (data: dataType[]) => void
+  resolve?: (data: dataType[]) => void,
+  size: number,
+  head: number,
+  tail: number,
 }
 
-export const stack: stackType = {
-  func: [],
-  id: -1,
+export const queue: queueType = {
+  func: new Array(bufferLimit),
   running: false,
+  size: 0,
+  head: 0,
+  tail: 0,
   async call () {
     if (this.running) return
     this.running = true
-    while (this.func.length > (this.id + 1)) {
-      this.id ++
-      await this.func[this.id]()
-      await delay(200)
+    while (this.size > 0) {
+      await this.func[this.head]?.()
+      this.func[this.head] = undefined
+      this.size --
+      this.head = (this.head + 1) % bufferLimit
+      await delay(50)
     }
     this.clear()
   },
   add(newFunc) {
-    this.func.push(newFunc)
+    if (this.size >= bufferLimit) {
+      this.clear()
+      this.size = 0
+      this.head = 0
+      this.tail = 0
+      this.func = new Array(bufferLimit)
+      throw new Error(`Переполнение очереди необработанных запросов. Текущий лимит: ${bufferLimit}`)
+    }
+    this.size ++
+    this.func[this.tail] = newFunc
+    this.tail = (this.tail + 1) % bufferLimit
     if (!this.running) this.call()
   },
   clear () {
-    this.func = []
-    this.id = -1
     this.running = false
     this.onFinish()
     this.onFinish = () => {}
@@ -48,7 +63,6 @@ export const stack: stackType = {
   onFinish () {},
 }
 // Вызов API VK
-
 export const callVK = async (method: string, args: any, callbackName?: string) => {
   const params = new URLSearchParams({v: API_VERSION, access_token: token, ...args}).toString()
   const url = `/method/${method}?${params}`
@@ -60,10 +74,3 @@ export const callVK = async (method: string, args: any, callbackName?: string) =
     throw error
   }
 }
-// Прочее
-export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-
-window.addEventListener('unhandledrejection', e => {
-  console.log(e)
-  alert('Ошибка - подробности в консоли')
-})

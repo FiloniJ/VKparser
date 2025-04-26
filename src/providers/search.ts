@@ -1,5 +1,5 @@
 import { dataType } from '../App'
-import { callVK } from './stack'
+import { callVK } from './queue'
 import { settingProps } from '../components/Settings'
 import { Dispatch, SetStateAction } from 'react'
 
